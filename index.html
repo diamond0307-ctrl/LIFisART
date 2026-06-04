@@ -591,6 +591,15 @@
     background: var(--bg-deep);
   }
 
+  .title-line {
+    display: inline-block;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    letter-spacing: inherit;
+    white-space: nowrap;
+  }
+
   .items-list {
     margin-top: 48px;
     display: flex;
@@ -1601,6 +1610,21 @@
       letter-spacing: 0;
     }
 
+    #problem .section-title {
+      font-size: clamp(30px, 8vw, 40px);
+      line-height: 1.34;
+    }
+
+    #what-is .section-title {
+      font-size: clamp(22px, 6.2vw, 34px);
+      line-height: 1.38;
+    }
+
+    #flow .section-title {
+      font-size: clamp(26px, 7vw, 36px);
+      line-height: 1.36;
+    }
+
     .section-body {
       font-size: 15px;
       line-height: 1.9;
@@ -1946,7 +1970,10 @@
 
     <!-- Phase 2: Main copy -->
     <div class="hero-phase" id="hero-phase-2">
-      <span class="hero-main-copy">あなたという人生を、<br>作品に。</span>
+      <span class="hero-main-copy">
+        <span class="title-line">あなたという人生を、</span><br>
+        <span class="title-line">作品に。</span>
+      </span>
     </div>
 
     <!-- Phase 3: Catch + CTA -->
@@ -1985,45 +2012,41 @@
   </div>
   <!-- Slide 02 -->
   <div class="slide" data-index="1">
-    <img class="slide-img" src="sample-02.png" alt="">
+    <img class="slide-img" src="sample-03.png" alt="">
   </div>
   <!-- Slide 03 -->
   <div class="slide" data-index="2">
-    <img class="slide-img" src="sample-03.png" alt="">
+    <img class="slide-img" src="sample-04.png" alt="">
   </div>
   <!-- Slide 04 -->
   <div class="slide" data-index="3">
-    <img class="slide-img" src="sample-04.png" alt="">
+    <img class="slide-img" src="sample-05.png" alt="">
   </div>
   <!-- Slide 05 -->
   <div class="slide" data-index="4">
-    <img class="slide-img" src="sample-05.png" alt="">
+    <img class="slide-img" src="sample-06.png" alt="">
   </div>
   <!-- Slide 06 -->
   <div class="slide" data-index="5">
-    <img class="slide-img" src="sample-06.png" alt="">
+    <img class="slide-img" src="sample-07.png" alt="">
   </div>
   <!-- Slide 07 -->
   <div class="slide" data-index="6">
-    <img class="slide-img" src="sample-07.png" alt="">
+    <img class="slide-img" src="sample-08.png" alt="">
   </div>
   <!-- Slide 08 -->
   <div class="slide" data-index="7">
-    <img class="slide-img" src="sample-08.png" alt="">
+    <img class="slide-img" src="sample-09.png" alt="">
   </div>
   <!-- Slide 09 -->
   <div class="slide" data-index="8">
-    <img class="slide-img" src="sample-09.png" alt="">
-  </div>
-  <!-- Slide 10 -->
-  <div class="slide" data-index="9">
     <img class="slide-img" src="sample-10.png" alt="">
   </div>
 
   <!-- UI -->
   <div class="slider-progress" id="sliderProgress"></div>
   <div class="slider-dots" id="sliderDots"></div>
-  <div class="slider-counter" id="sliderCounter">01 / 10</div>
+  <div class="slider-counter" id="sliderCounter">01 / 09</div>
 
 </section>
 
@@ -2040,8 +2063,8 @@
     <p class="section-label reveal">02 — Problem</p>
 
     <h2 class="section-title reveal reveal-delay-1">
-      "あなた"は<br>
-      本当に伝わってますか？
+      <span class="title-line">"あなた"は</span><br>
+      <span class="title-line">本当に伝わってますか？</span>
     </h2>
 
     <div class="big-quote reveal reveal-delay-2">
@@ -2142,8 +2165,8 @@
     <p class="section-label reveal">05 — What is</p>
 
     <h2 class="section-title reveal reveal-delay-1">
-      "何をしてる人か"ではなく、<br>
-      "どんな人か"を伝える
+      <span class="title-line">"何をしてる人か"ではなく、</span><br>
+      <span class="title-line">"どんな人か"を伝える</span>
     </h2>
 
     <p class="section-body reveal reveal-delay-2">
@@ -2197,8 +2220,8 @@
     <p class="section-label reveal">06 — Flow</p>
 
     <h2 class="section-title reveal reveal-delay-1">
-      人生のタイムラインを、<br>
-      世界観として見せる。
+      <span class="title-line">人生のタイムラインを、</span><br>
+      <span class="title-line">世界観として見せる。</span>
     </h2>
 
     <div class="flow-steps">
