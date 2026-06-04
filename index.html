@@ -2292,14 +2292,7 @@
     dotsWrap.appendChild(d);
   });
 
-  function goTo(index) {
-    clearTimeout(timer);
-    slides[current].classList.remove('active');
-    dotsWrap.children[current].classList.remove('active');
-    current = (index + TOTAL) % TOTAL;
-    slides[current].classList.add('active');
-    dotsWrap.children[current].classList.add('active');
-    counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
+  function startProgress() {
     progress.style.transition = 'none';
     progress.style.width = '0%';
     requestAnimationFrame(function() {
@@ -2308,10 +2301,25 @@
         progress.style.width = '100%';
       });
     });
+  }
+
+  function goTo(index) {
+    clearTimeout(timer);
+    slides[current].classList.remove('active');
+    dotsWrap.children[current].classList.remove('active');
+    current = (index + TOTAL) % TOTAL;
+    slides[current].classList.add('active');
+    dotsWrap.children[current].classList.add('active');
+    counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
+    startProgress();
     timer = setTimeout(function() { goTo(current + 1); }, DURATION);
   }
 
-  goTo(0);
+  // 初期化: 最初のスライドはHTMLにactiveあり、そのまま開始
+  dotsWrap.children[0].classList.add('active');
+  counter.textContent = '01 / ' + String(TOTAL).padStart(2, '0');
+  startProgress();
+  timer = setTimeout(function() { goTo(1); }, DURATION);
 })();
 </script>
 
