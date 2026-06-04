@@ -836,27 +836,18 @@
 
   .slide-img {
     position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+    inset: -8%;
+    width: 116%;
+    height: 116%;
+    object-fit: cover;
     object-position: center center;
-    transform: scale(1.0);
-    transition: transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: scale(1.0) translate(4%, -4%);
+    transition: transform 5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change: transform;
   }
 
   .slide.active .slide-img {
-    transform: scale(1.0);
-  }
-
-  @media (min-width: 768px) {
-    .slide-img {
-      object-fit: cover;
-      transform: scale(1.05);
-    }
-    .slide.active .slide-img {
-      transform: scale(1.0);
-    }
+    transform: scale(1.0) translate(-4%, 4%);
   }
 
   .slide-overlay {
@@ -1614,8 +1605,7 @@
 <!-- ========================
      WORKS — SLIDER
 ======================== -->
-<div id="works-scroll-container" style="position:relative;height:500vh;">
-<section id="works" style="position:sticky;top:0;width:100%;height:100vh;overflow:hidden;background:#000;">
+<section id="works" style="position:relative;width:100%;height:100vh;overflow:hidden;background:#000;">
 
   <div class="slider-section-header">
     <span class="slider-section-label">Works</span>
@@ -1668,7 +1658,6 @@
   <div class="slider-counter" id="sliderCounter">01 / 10</div>
 
 </section>
-</div>
 
 
 <!-- ========================
@@ -2283,58 +2272,46 @@
 })();
 
 /* =====================
-   WORKS SLIDER — SCROLL LINKED
+   WORKS SLIDER — AUTO PLAY
 ===================== */
 (function() {
-  const container = document.getElementById('works-scroll-container');
-  const slides    = document.querySelectorAll('.slide');
-  const dotsWrap  = document.getElementById('sliderDots');
-  const counter   = document.getElementById('sliderCounter');
-  const progress  = document.getElementById('sliderProgress');
-  const TOTAL     = slides.length;
+  const slides   = document.querySelectorAll('.slide');
+  const dotsWrap = document.getElementById('sliderDots');
+  const counter  = document.getElementById('sliderCounter');
+  const progress = document.getElementById('sliderProgress');
+  const TOTAL    = slides.length;
+  const DURATION = 4000;
 
   let current = 0;
+  let timer   = null;
 
-  // Build dots
   slides.forEach(function(_, i) {
     var d = document.createElement('button');
     d.className = 'slider-dot' + (i === 0 ? ' active' : '');
-    d.addEventListener('click', function() {
-      // tap to advance on mobile
-      goTo((current + 1) % TOTAL);
-    });
+    d.addEventListener('click', function() { goTo(i); });
     dotsWrap.appendChild(d);
   });
 
   function goTo(index) {
-    if (index === current) return;
+    clearTimeout(timer);
     slides[current].classList.remove('active');
     dotsWrap.children[current].classList.remove('active');
-    current = index;
+    current = (index + TOTAL) % TOTAL;
     slides[current].classList.add('active');
     dotsWrap.children[current].classList.add('active');
-    var num = String(current + 1).padStart(2, '0');
-    counter.textContent = num + ' / ' + String(TOTAL).padStart(2, '0');
-    // progress bar
+    counter.textContent = String(current + 1).padStart(2, '0') + ' / ' + String(TOTAL).padStart(2, '0');
     progress.style.transition = 'none';
-    progress.style.width = ((current / (TOTAL - 1)) * 100) + '%';
+    progress.style.width = '0%';
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        progress.style.transition = 'width ' + DURATION + 'ms linear';
+        progress.style.width = '100%';
+      });
+    });
+    timer = setTimeout(function() { goTo(current + 1); }, DURATION);
   }
 
-  function onScroll() {
-    if (!container) return;
-    var rect    = container.getBoundingClientRect();
-    var total   = container.offsetHeight - window.innerHeight;
-    var scrolled = -rect.top;
-    if (scrolled < 0) scrolled = 0;
-    if (scrolled > total) scrolled = total;
-    var ratio   = scrolled / total; // 0 → 1
-    var index   = Math.min(Math.floor(ratio * TOTAL), TOTAL - 1);
-    goTo(index);
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
-
+  goTo(0);
 })();
 </script>
 
