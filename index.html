@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIFE is ART — あなたという人生を、作品に。</title>
+<meta name="description" content="人生・価値観・傷・好き・未来を1ページのWebとして可視化するサービス">
+
+<style>
+  /* =====================
+     RESET & BASE
+  ===================== */
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  :root {
+    --bg-deep:       #0d0c0b;
+    --bg-dark:       #111009;
+    --bg-mid:        #161412;
+    --bg-card:       #1a1714;
+    --text-ivory:    #e8e0d0;
+    --text-muted:    #8a8070;
+    --text-dim:      #5a5248;
+    --accent-amber:  #c8923a;
+    --accent-gold:   #a07030;
+    --border:        rgba(200, 180, 140, 0.1);
+    --border-mid:    rgba(200, 180, 140, 0.18);
+
+    --font-serif:   'Georgia', 'Times New Roman', serif;
+    --font-sans:    'Helvetica Neue', 'Arial', sans-serif;
+
+    --ease-film: cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-ivory);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* =====================
+     TYPOGRAPHY
+  ===================== */
+  .t-label {
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .t-num {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent-amber);
+    font-family: var(--font-sans);
+  }
+
+  /* =====================
+     SCROLL REVEAL
+  ===================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.9s var(--ease-film), transform 0.9s var(--ease-film);
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+  .reveal-delay-4 { transition-delay: 0.6s; }
+
+  /* =====================
+     LOGO / NAV
+  ===================== */
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    mix-blend-mode: normal;
+  }
+
+  .nav::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(13,12,11,0.7) 0%, transparent 100%);
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  .logo {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-ivory);
+    opacity: 0.75;
+  }
+
+  .nav-cta {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--text-dim);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .nav-cta:hover {
+    color: var(--text-ivory);
+    border-color: var(--text-muted);
+  }
+
+  /* =====================
+     HERO
+  ===================== */
+  #hero {
+    position: relative;
+    min-height: 420vh;
+    background: var(--bg-deep);
+  }
+
+  .hero-sticky {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Background overlay that lightens on scroll */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--bg-deep);
+    transition: opacity 0.1s linear;
+  }
+
+  /* Simulated cinematic dark background texture */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(60,45,20,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 100% 80% at 50% 100%, rgba(20,15,5,0.8) 0%, transparent 60%);
+  }
+
+  /* Large "ART" typography in background */
+  .hero-large-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .hero-large-text span {
+    font-family: var(--font-sans);
+    font-size: clamp(140px, 38vw, 420px);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: rgba(232, 224, 208, 0.055);
+    line-height: 1;
+    white-space: nowrap;
+    transition: opacity 0.6s var(--ease-film);
+  }
+
+  /* Abstract art object — CSS-only sculpture */
+  .hero-object {
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(200px, 50vw, 380px);
+    height: clamp(100px, 20vw, 180px);
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  .hero-object svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Hero content layers */
+  .hero-content {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .hero-phase {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    padding: 0 24px;
+    transition: opacity 0.8s var(--ease-film), transform 0.8s var(--ease-film);
+  }
+
+  /* Phase 1: Initial state — minimal */
+  #hero-phase-1 {
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 1;
+  }
+
+  #hero-phase-1 .hero-life-is {
+    font-size: clamp(11px, 2.5vw, 14px);
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 16px;
+    display: block;
+  }
+
+  /* Phase 2: "あなたという人生を、作品に。" */
+  #hero-phase-2 {
+    top: 50%;
+    transform: translateY(-44%);
+    opacity: 0;
+    filter: blur(6px);
+  }
+
+  #hero-phase-2.active {
+    opacity: 1;
+    transform: translateY(-50%);
+    filter: blur(0px);
+  }
+
+  #hero-phase-2 .hero-main-copy {
+    font-size: clamp(26px, 7vw, 64px);
+    font-weight: 300;
+    line-height: 1.3;
+    letter-spacing: 0.04em;
+    color: var(--text-ivory);
+    display: block;
+  }
+
+  /* Phase 3: catchcopy */
+  #hero-phase-3 {
+    top: 50%;
+    transform: translateY(-44%);
+    opacity: 0;
+    filter: blur(4px);
+  }
+
+  #hero-phase-3.active {
+    opacity: 1;
+    transform: translateY(-50%);
+    filter: blur(0px);
+  }
+
+  #hero-phase-3 .hero-catch {
+    font-size: clamp(32px, 9vw, 80px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--text-ivory);
+    display: block;
+    margin-bottom: 32px;
+  }
+
+  #hero-phase-3 .hero-sub {
+    font-size: clamp(13px, 3.5vw, 18px);
+    font-weight: 300;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 480px;
+    margin: 0 auto 40px;
+  }
+
+  #hero-phase-3 .hero-sub em {
+    font-style: normal;
+    color: var(--text-ivory);
+    opacity: 0.85;
+  }
+
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.4;
+  }
+
+  .hero-scroll-hint span {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--text-muted), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+
+  /* =====================
+     CTA BUTTON
+  ===================== */
+  .btn {
+    display: inline-block;
+    padding: 16px 36px;
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--bg-deep);
+    background: var(--text-ivory);
+    border: none;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, letter-spacing 0.3s;
+  }
+
+  .btn:hover {
+    background: var(--accent-amber);
+    color: var(--bg-deep);
+    letter-spacing: 0.3em;
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text-ivory);
+    border: 1px solid rgba(232, 224, 208, 0.3);
+  }
+
+  .btn-outline:hover {
+    background: rgba(232, 224, 208, 0.06);
+    border-color: var(--text-ivory);
+    letter-spacing: 0.3em;
+    color: var(--text-ivory);
+  }
+
+  /* =====================
+     SECTIONS — COMMON
+  ===================== */
+  section {
+    position: relative;
+  }
+
+  .section-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 100px 28px;
+  }
+
+  .section-inner.wide {
+    max-width: 1000px;
+  }
+
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .section-label::after {
+    content: '';
+    display: block;
+    width: 32px;
+    height: 1px;
+    background: var(--accent-gold);
+    opacity: 0.5;
+  }
+
+  .section-title {
+    font-size: clamp(24px, 6vw, 44px);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+    color: var(--text-ivory);
+    margin-bottom: 40px;
+  }
+
+  .section-title strong {
+    font-weight: 700;
+  }
+
+  .section-body {
+    font-size: clamp(15px, 3.5vw, 17px);
+    line-height: 1.9;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .section-body p + p {
+    margin-top: 20px;
+  }
+
+  /* Thin divider line */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* =====================
+     02 PROBLEM
+  ===================== */
+  #problem {
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+  }
+
+  #problem .section-title {
+    font-size: clamp(24px, 6.5vw, 52px);
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
+  }
+
+  #problem .big-quote {
+    font-size: clamp(14px, 3.5vw, 18px);
+    line-height: 2;
+    color: var(--text-muted);
+    border-left: 2px solid var(--accent-amber);
+    padding-left: 24px;
+    margin-top: 40px;
+  }
+
+  #problem .big-quote span {
+    display: block;
+    color: rgba(232, 224, 208, 0.5);
+    font-size: 0.9em;
+    margin-top: 6px;
+  }
+
+  /* =====================
+     03 WHY
+  ===================== */
+  #why {
+    background: var(--bg-deep);
+  }
+
+  #why .section-title {
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  #why .founder-note {
+    margin-top: 48px;
+    padding: 40px 32px;
+    font-size: clamp(15px, 3.5vw, 17px);
+    line-height: 2.1;
+    color: var(--text-muted);
+  }
+
+  #why .founder-note p + p {
+    margin-top: 16px;
+  }
+
+  #why .founder-note .highlight {
+    color: var(--text-ivory);
+    font-weight: 400;
+  }
+
+  /* =====================
+     04 WHY NOT
+  ===================== */
+  #why-not {
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1px;
+    margin: 48px 0;
+    border: 1px solid var(--border);
+  }
+
+  @media (min-width: 640px) {
+    .cards-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .card-item {
+    padding: 36px 28px;
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+    opacity: 0;
+    transform: translateX(-40px);
+    transition: opacity 0.7s var(--ease-film), transform 0.7s var(--ease-film);
+  }
+
+  .card-item.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .card-item:nth-child(2) { transition-delay: 0.15s; }
+  .card-item:nth-child(3) { transition-delay: 0.3s; }
+
+  @media (min-width: 640px) {
+    .card-item {
+      border-bottom: none;
+      border-right: 1px solid var(--border);
+    }
+
+    .card-item:last-child {
+      border-right: none;
+    }
+  }
+
+  .card-num {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: var(--accent-amber);
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .card-title {
+    font-size: clamp(16px, 3.5vw, 19px);
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-ivory);
+  }
+
+  /* =====================
+     05 WHAT IS
+  ===================== */
+  #what-is {
+    background: var(--bg-deep);
+  }
+
+  .items-list {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .item-row {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .item-row:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .item-row .item-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    flex-shrink: 0;
+    min-width: 70px;
+  }
+
+  .item-row .item-text {
+    font-size: clamp(15px, 3.5vw, 17px);
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  /* =====================
+     06 FLOW
+  ===================== */
+  #flow {
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+  }
+
+  .flow-steps {
+    margin-top: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .flow-step {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 24px;
+    align-items: start;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .flow-step:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .flow-step-num {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--accent-amber);
+    padding-top: 3px;
+  }
+
+  .flow-step-content .step-title {
+    font-size: clamp(18px, 4vw, 24px);
+    font-weight: 500;
+    color: var(--text-ivory);
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .flow-step-content .step-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  /* =====================
+     07 PROMISE
+  ===================== */
+  #promise {
+    background: var(--bg-deep);
+  }
+
+  .promise-list {
+    margin: 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .promise-item {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: clamp(17px, 4vw, 22px);
+    font-weight: 300;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    transition: color 0.3s;
+  }
+
+  .promise-item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .promise-item:hover {
+    color: var(--text-ivory);
+  }
+
+  /* =====================
+     08 BENEFIT
+  ===================== */
+  #benefit {
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+  }
+
+  .benefit-grid {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    border: 1px solid var(--border);
+  }
+
+  @media (min-width: 640px) {
+    .benefit-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .benefit-item {
+    background: var(--bg-card);
+    padding: 28px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .benefit-item:nth-child(2n) {
+    border-right: none;
+  }
+
+  @media (min-width: 640px) {
+    .benefit-item:nth-child(2n) {
+      border-right: 1px solid var(--border);
+    }
+
+    .benefit-item:nth-child(3n) {
+      border-right: none;
+    }
+  }
+
+  .benefit-icon {
+    width: 28px;
+    height: 1px;
+    background: var(--accent-amber);
+    opacity: 0.6;
+  }
+
+  .benefit-text {
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 400;
+    color: var(--text-ivory);
+    line-height: 1.5;
+  }
+
+  /* =====================
+     09 FOR YOU
+  ===================== */
+  #for-you {
+    background: var(--bg-deep);
+  }
+
+  .for-you-list {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .for-you-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 22px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .for-you-item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .for-you-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent-amber);
+    flex-shrink: 0;
+    margin-top: 9px;
+  }
+
+  .for-you-text {
+    font-size: clamp(14px, 3.5vw, 17px);
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* =====================
+     WORKS SLIDER
+  ===================== */
+  #works-slider {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .slide-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transform: scale(1.03);
+    transition: transform 4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .slide.active .slide-img {
+    transform: scale(1.0);
+  }
+
+  @media (min-width: 768px) {
+    .slide-img {
+      object-position: center center;
+      transform: scale(1.05);
+    }
+  }
+
+  .slide-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to right,
+      rgba(0,0,0,0.55) 0%,
+      rgba(0,0,0,0.2) 60%,
+      rgba(0,0,0,0.05) 100%
+    );
+  }
+
+  .slide-content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 clamp(28px, 8vw, 100px);
+    z-index: 2;
+  }
+
+  .slide-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s 0.3s var(--ease-film), transform 0.8s 0.3s var(--ease-film);
+  }
+
+  .slide.active .slide-label {
+    opacity: 0.9;
+    transform: translateY(0);
+  }
+
+  .slide-copy {
+    font-size: clamp(28px, 6.5vw, 72px);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #fff;
+    margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s 0.5s var(--ease-film), transform 0.9s 0.5s var(--ease-film);
+    text-shadow: 0 2px 24px rgba(0,0,0,0.3);
+  }
+
+  .slide.active .slide-copy {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .slide-sub {
+    font-size: clamp(13px, 2.5vw, 17px);
+    font-weight: 300;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.8;
+    max-width: 420px;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.8s 0.75s var(--ease-film), transform 0.8s 0.75s var(--ease-film);
+  }
+
+  .slide.active .slide-sub {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Slider nav dots */
+  .slider-dots {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .slider-dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    border: none;
+    padding: 0;
+  }
+
+  .slider-dot.active {
+    background: var(--accent-amber);
+    transform: scale(1.4);
+  }
+
+  /* Progress bar */
+  .slider-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background: var(--accent-amber);
+    width: 0%;
+    transition: width linear;
+    z-index: 10;
+    opacity: 0.7;
+  }
+
+  /* Slide counter */
+  .slider-counter {
+    position: absolute;
+    bottom: 28px;
+    right: clamp(28px, 5vw, 60px);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: rgba(255,255,255,0.4);
+    z-index: 10;
+  }
+
+  /* Section header above slider */
+  .slider-section-header {
+    position: absolute;
+    top: 32px;
+    left: clamp(28px, 5vw, 60px);
+    z-index: 10;
+  }
+
+  .slider-section-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(200,146,58,0.8);
+  }
+
+  /* =====================
+     10 SERVICE PLAN
+  ===================== */
+  #service-plan {
+    background: var(--bg-deep);
+    border-top: 1px solid var(--border);
+  }
+
+  .plan-card {
+    margin-top: 56px;
+    border: 1px solid var(--border-mid);
+    padding: 56px 44px;
+    position: relative;
+  }
+
+  .plan-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 48px;
+    height: 1px;
+    background: var(--accent-amber);
+  }
+
+  .plan-name {
+    font-size: 10px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .plan-title {
+    font-size: clamp(18px, 4vw, 24px);
+    font-weight: 500;
+    color: var(--text-ivory);
+    line-height: 1.4;
+    margin-bottom: 40px;
+  }
+
+  .plan-price {
+    font-size: clamp(36px, 9vw, 64px);
+    font-weight: 700;
+    color: var(--text-ivory);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .plan-price-note {
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+    margin-bottom: 48px;
+  }
+
+  .plan-divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+  }
+
+  .plan-section-label {
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin-bottom: 20px;
+    display: block;
+    opacity: 0.7;
+  }
+
+  .plan-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .plan-item {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: clamp(14px, 3.5vw, 16px);
+    font-weight: 300;
+    color: var(--text-muted);
+  }
+
+  .plan-item:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .plan-item::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 1px;
+    background: var(--accent-amber);
+    flex-shrink: 0;
+    opacity: 0.5;
+    position: relative;
+    top: -2px;
+  }
+
+  .plan-period {
+    font-size: clamp(13px, 3.5vw, 15px);
+    color: var(--text-muted);
+    font-weight: 300;
+    line-height: 1.7;
+  }
+
+  .plan-period strong {
+    color: var(--text-ivory);
+    font-weight: 500;
+  }
+
+  .plan-tagline {
+    margin-top: 40px;
+    font-size: clamp(15px, 3.5vw, 18px);
+    font-weight: 300;
+    color: var(--text-ivory);
+    line-height: 1.8;
+    opacity: 0.75;
+    letter-spacing: 0.02em;
+  }
+
+  .plan-qr-note {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 12px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  .plan-qr-note::before {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    background: var(--text-dim);
+    opacity: 0.4;
+  }
+
+  /* =====================
+     11 WORKS
+  ===================== */
+  #works {
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .mockups-row {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    padding: 0 28px 20px;
+    margin-top: 48px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .mockups-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mockup {
+    flex-shrink: 0;
+    width: clamp(160px, 40vw, 220px);
+    background: var(--bg-card);
+    border: 1px solid var(--border-mid);
+    border-radius: 20px;
+    overflow: hidden;
+    padding: 12px;
+  }
+
+  .mockup-screen {
+    border-radius: 12px;
+    overflow: hidden;
+    aspect-ratio: 9/19;
+    background: #0a0908;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 12px;
+    gap: 8px;
+    position: relative;
+  }
+
+  /* Mockup content elements */
+  .mock-header {
+    font-size: 6px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: rgba(200,146,58,0.6);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .mock-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-ivory);
+    text-align: center;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+  }
+
+  .mock-sub {
+    font-size: 6px;
+    color: var(--text-dim);
+    text-align: center;
+    letter-spacing: 0.15em;
+    margin-bottom: 6px;
+  }
+
+  .mock-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
+  }
+
+  .mock-section-title {
+    font-size: 5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    opacity: 0.7;
+    margin-bottom: 3px;
+  }
+
+  .mock-text-line {
+    height: 4px;
+    background: rgba(200,180,140,0.12);
+    border-radius: 2px;
+    margin-bottom: 3px;
+  }
+
+  .mock-text-line.short { width: 60%; }
+  .mock-text-line.med   { width: 80%; }
+  .mock-text-line.long  { width: 95%; }
+
+  .mock-timeline {
+    display: flex;
+    gap: 4px;
+    margin-top: 4px;
+  }
+
+  .mock-timeline-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-amber);
+    opacity: 0.5;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .mock-timeline-line {
+    flex: 1;
+    height: 4px;
+    background: rgba(200,180,140,0.08);
+    border-radius: 2px;
+    align-self: center;
+  }
+
+  .mock-photo-area {
+    flex: 1;
+    border-radius: 6px;
+    overflow: hidden;
+    margin: 4px 0;
+    min-height: 40px;
+  }
+
+  .mock-photo-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.85) contrast(1.05);
+  }
+
+  .mock-photo-text {
+    font-size: 5px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  .mock-tag {
+    display: inline-block;
+    padding: 2px 6px;
+    border: 1px solid rgba(200, 146, 58, 0.25);
+    font-size: 5px;
+    letter-spacing: 0.1em;
+    color: rgba(200, 146, 58, 0.6);
+    border-radius: 2px;
+    margin-right: 3px;
+    margin-bottom: 3px;
+  }
+
+  /* =====================
+     11 FINAL CTA
+  ===================== */
+  #final-cta {
+    background: var(--bg-deep);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  #final-cta .section-inner {
+    padding: 120px 28px 100px;
+  }
+
+  .final-eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    margin-bottom: 48px;
+    opacity: 0.7;
+  }
+
+  .final-title {
+    font-size: clamp(36px, 10vw, 88px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-ivory);
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  .final-sub {
+    font-size: clamp(14px, 3.5vw, 18px);
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 56px;
+    line-height: 1.8;
+  }
+
+  /* =====================
+     CONTACT FORM
+  ===================== */
+  #contact {
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+  }
+
+  .form-wrap {
+    margin-top: 56px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 28px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .form-row:first-child {
+    border-top: 1px solid var(--border);
+  }
+
+  .form-label {
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .form-label .required {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+    text-transform: none;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-mid);
+    padding: 10px 0;
+    font-size: clamp(15px, 3.5vw, 16px);
+    font-family: var(--font-sans);
+    color: var(--text-ivory);
+    outline: none;
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .form-input::placeholder,
+  .form-textarea::placeholder {
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  .form-input:focus,
+  .form-textarea:focus,
+  .form-select:focus {
+    border-bottom-color: var(--accent-amber);
+  }
+
+  .form-textarea {
+    resize: none;
+    height: 100px;
+    line-height: 1.8;
+  }
+
+  .form-select {
+    color: var(--text-muted);
+    cursor: pointer;
+  }
+
+  .form-select option {
+    background: var(--bg-mid);
+    color: var(--text-ivory);
+  }
+
+  .form-note {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.8;
+    margin-top: 32px;
+    letter-spacing: 0.05em;
+  }
+
+  .form-submit-wrap {
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  .btn-submit {
+    display: inline-block;
+    padding: 18px 56px;
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--bg-deep);
+    background: var(--text-ivory);
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    transition: background 0.3s, letter-spacing 0.3s;
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .btn-submit:hover {
+    background: var(--accent-amber);
+    letter-spacing: 0.35em;
+  }
+
+  /* =====================
+     FOOTER
+  ===================== */
+  footer {
+    background: var(--bg-deep);
+    border-top: 1px solid var(--border);
+    padding: 48px 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-size: 12px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .footer-tagline {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.15em;
+  }
+
+  .footer-copy {
+    font-size: 10px;
+    color: var(--text-dim);
+    letter-spacing: 0.1em;
+  }
+
+  /* =====================
+     MEDIA QUERIES
+  ===================== */
+  @media (min-width: 768px) {
+    .section-inner {
+      padding: 140px 40px;
+    }
+
+    .nav {
+      padding: 32px 48px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .section-inner {
+      padding: 160px 48px;
+    }
+  }
+
+  /* =====================
+     UTILITY
+  ===================== */
+  .spacer-sm  { height: 24px; }
+  .spacer-md  { height: 48px; }
+  .spacer-lg  { height: 80px; }
+
+  .text-amber { color: var(--accent-amber); }
+  .text-ivory { color: var(--text-ivory); }
+
+</style>
+</head>
+<body>
+
+<!-- ========================
+     NAV
+======================== -->
+<nav class="nav">
+</nav>
+
+
+<!-- ========================
+     01 HERO
+======================== -->
+<section id="hero">
+  <div class="hero-sticky" id="heroSticky">
+
+    <!-- Background -->
+    <div class="hero-bg" id="heroBg"></div>
+
+    <!-- Large background typography -->
+    <div class="hero-large-text" id="heroLargeText">
+      <span id="heroLargeWord">ART</span>
+    </div>
+
+    <!-- Abstract art object (CSS SVG sculpture) -->
+    <div class="hero-object" id="heroObject">
+      <svg viewBox="0 0 380 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="objGrad" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#d4c4a0" stop-opacity="0.35"/>
+            <stop offset="60%" stop-color="#8a7a60" stop-opacity="0.2"/>
+            <stop offset="100%" stop-color="#3a3020" stop-opacity="0.05"/>
+          </radialGradient>
+          <filter id="objBlur">
+            <feGaussianBlur stdDeviation="2"/>
+          </filter>
+        </defs>
+        <!-- Organic blob shape inspired by reference image -->
+        <path d="M40 90 C30 60 50 30 100 35 C130 38 150 20 190 25 C230 30 260 15 290 35 C330 58 350 80 340 100 C330 120 300 140 260 138 C220 136 200 150 160 148 C120 146 90 150 60 135 C35 122 48 115 40 90Z"
+              fill="url(#objGrad)" filter="url(#objBlur)"/>
+        <!-- Reflection -->
+        <path d="M40 90 C30 60 50 30 100 35 C130 38 150 20 190 25 C230 30 260 15 290 35 C330 58 350 80 340 100 C330 120 300 140 260 138 C220 136 200 150 160 148 C120 146 90 150 60 135 C35 122 48 115 40 90Z"
+              fill="url(#objGrad)"
+              transform="scale(1,-1) translate(0,-300)"
+              opacity="0.15" filter="url(#objBlur)"/>
+      </svg>
+    </div>
+
+    <!-- Phase 1: Initial -->
+    <div class="hero-phase" id="hero-phase-1">
+      <span class="hero-life-is">Life is Art</span>
+      <div style="width:1px;height:48px;background:rgba(200,180,140,0.2);margin:0 auto;"></div>
+    </div>
+
+    <!-- Phase 2: Main copy -->
+    <div class="hero-phase" id="hero-phase-2">
+      <span class="hero-main-copy">あなたという人生を、<br>作品に。</span>
+    </div>
+
+    <!-- Phase 3: Catch + CTA -->
+    <div class="hero-phase" id="hero-phase-3">
+      <span class="hero-catch">肩書きじゃ、<br>人は伝わらない。</span>
+      <p class="hero-sub">
+        仕事でも、肩書きでもない。<br>
+        <em>あなたの人生、価値観、好き、傷、未来を</em><br>
+        ひとつのWebページとして残す。
+      </p>
+      <!-- CTA LINK: ここのhrefを変更 -->
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn">自分の人生を形にする</a>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="hero-scroll-hint" id="heroScrollHint">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ========================
+     WORKS — SLIDER
+======================== -->
+<div id="works-scroll-container" style="position:relative;height:500vh;">
+<section id="works" style="position:sticky;top:0;width:100%;height:100vh;overflow:hidden;background:#000;">
+
+  <div class="slider-section-header">
+    <span class="slider-section-label">Works</span>
+  </div>
+
+  <!-- Slide 01 -->
+  <div class="slide active" data-index="0">
+    <img class="slide-img" src="sample-01.png" alt="">
+  </div>
+  <!-- Slide 02 -->
+  <div class="slide" data-index="1">
+    <img class="slide-img" src="sample-02.png" alt="">
+  </div>
+  <!-- Slide 03 -->
+  <div class="slide" data-index="2">
+    <img class="slide-img" src="sample-03.png" alt="">
+  </div>
+  <!-- Slide 04 -->
+  <div class="slide" data-index="3">
+    <img class="slide-img" src="sample-04.png" alt="">
+  </div>
+  <!-- Slide 05 -->
+  <div class="slide" data-index="4">
+    <img class="slide-img" src="sample-05.png" alt="">
+  </div>
+  <!-- Slide 06 -->
+  <div class="slide" data-index="5">
+    <img class="slide-img" src="sample-06.png" alt="">
+  </div>
+  <!-- Slide 07 -->
+  <div class="slide" data-index="6">
+    <img class="slide-img" src="sample-07.png" alt="">
+  </div>
+  <!-- Slide 08 -->
+  <div class="slide" data-index="7">
+    <img class="slide-img" src="sample-08.png" alt="">
+  </div>
+  <!-- Slide 09 -->
+  <div class="slide" data-index="8">
+    <img class="slide-img" src="sample-09.png" alt="">
+  </div>
+  <!-- Slide 10 -->
+  <div class="slide" data-index="9">
+    <img class="slide-img" src="sample-10.png" alt="">
+  </div>
+
+  <!-- UI -->
+  <div class="slider-progress" id="sliderProgress"></div>
+  <div class="slider-dots" id="sliderDots"></div>
+  <div class="slider-counter" id="sliderCounter">01 / 10</div>
+
+</section>
+</div>
+
+
+<!-- ========================
+     02 PROBLEM
+======================== -->
+<section id="problem" style="position:relative;">
+  <div style="position:absolute;inset:0;z-index:0;overflow:hidden;">
+    <img src="problem-hero.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:brightness(0.55);">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom, transparent 30%, var(--bg-mid) 100%);"></div>
+  </div>
+  <div class="section-inner" style="position:relative;z-index:1;">
+    <p class="section-label reveal">02 — Problem</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      "あなた"は<br>
+      本当に伝わってますか？
+    </h2>
+
+    <div class="big-quote reveal reveal-delay-2">
+      SNSの投稿は、あなたの一部でしかない。
+      <span>直接会っても、数時間で人生は語れない。</span>
+      <span style="margin-top:20px;display:block;color:var(--text-ivory);opacity:0.7;font-size:1.05em;">人には、必ず物語がある。</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================
+     03 WHY
+======================== -->
+<section id="why">
+  <div class="section-inner">
+    <p class="section-label reveal">03 — Why</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      なぜ、<br>LIFE is ARTを<br>始めたのか
+    </h2>
+
+    <div class="founder-note reveal reveal-delay-2">
+      <p>
+        人の価値は、<span class="highlight">肩書きではないと思った。</span>
+      </p>
+      <p>
+        人は生きているだけで、誰かの役に立っている。
+      </p>
+      <p>
+        だから私は思う。<br>
+        <span class="highlight">本当の肩書きは、"あなた自身"なのかもしれない。</span>
+      </p>
+      <p>
+        みんな、この世界の主人公。
+      </p>
+      <p>
+        だから、<span class="highlight">"あなたを知ってもらうためのWebページ"</span>を作ろうと思った。
+      </p>
+    </div>
+
+    <div class="reveal reveal-delay-1" style="margin-top:48px;width:100%;border-radius:4px;overflow:hidden;">
+      <img src="sample-02.png" alt="" style="width:100%;display:block;object-fit:cover;">
+    </div>
+
+    <p class="reveal reveal-delay-2" style="margin-top:48px;font-size:clamp(18px,5vw,28px);font-weight:700;letter-spacing:-0.01em;color:var(--text-ivory);line-height:1.5;">
+      何を売ってるかじゃない、<br>誰が売ってるかが大事な時代。
+    </p>
+  </div>
+</section>
+
+
+<!-- ========================
+     04 WHY NOT
+======================== -->
+<section id="why-not" style="position:relative;">
+  <div style="position:absolute;inset:0;z-index:0;overflow:hidden;">
+    <img src="why-not-bg.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center top;filter:brightness(0.35);">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom, var(--bg-mid) 0%, transparent 15%, transparent 85%, var(--bg-mid) 100%);"></div>
+  </div>
+  <div class="section-inner wide" style="position:relative;z-index:1;">
+    <p class="section-label reveal">04 — Why Not</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      なぜ今まで、<br>
+      個人のLPが<br>
+      なかったのか？
+    </h2>
+
+    <div class="cards-grid reveal reveal-delay-2">
+      <div class="card-item">
+        <span class="card-num">01</span>
+        <p class="card-title">売るためのWebばかりだった</p>
+      </div>
+      <div class="card-item">
+        <span class="card-num">02</span>
+        <p class="card-title">SNSは断片しか伝わらない</p>
+      </div>
+      <div class="card-item">
+        <span class="card-num">03</span>
+        <p class="card-title">自分を言語化するのは難しい</p>
+      </div>
+    </div>
+
+    <p class="section-body reveal reveal-delay-3">
+      だから、あなたの人生を丁寧に掘り起こし、<br>
+      世界観として形にするサービスをつくりました。
+    </p>
+  </div>
+</section>
+
+
+<!-- ========================
+     05 WHAT IS
+======================== -->
+<section id="what-is">
+  <div class="section-inner">
+    <p class="section-label reveal">05 — What is</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      "何をしてる人か"ではなく、<br>
+      "どんな人か"を伝える
+    </h2>
+
+    <p class="section-body reveal reveal-delay-2">
+      これは自己紹介ではありません。<br>
+      <strong style="color:var(--text-ivory);font-weight:500;">人生紹介です。</strong>
+    </p>
+
+    <div class="items-list">
+      <div class="item-row reveal">
+        <span class="item-label">幼少期</span>
+        <span class="item-text">子どもの頃の記憶、原風景、最初の問い</span>
+      </div>
+      <div class="item-row reveal reveal-delay-1">
+        <span class="item-label">転機</span>
+        <span class="item-text">人生を変えた出来事、選択、出会い</span>
+      </div>
+      <div class="item-row reveal reveal-delay-2">
+        <span class="item-label">失敗</span>
+        <span class="item-text">傷、後悔、それでも続けた理由</span>
+      </div>
+      <div class="item-row reveal reveal-delay-3">
+        <span class="item-label">好き</span>
+        <span class="item-text">情熱、執着、誰にも言えなかった本音</span>
+      </div>
+      <div class="item-row reveal">
+        <span class="item-label">大切なこと</span>
+        <span class="item-text">価値観、譲れないもの、人生の軸</span>
+      </div>
+      <div class="item-row reveal reveal-delay-1">
+        <span class="item-label">今</span>
+        <span class="item-text">いま、なぜこれをしているのか</span>
+      </div>
+      <div class="item-row reveal reveal-delay-2">
+        <span class="item-label">未来</span>
+        <span class="item-text">見たい景色、残したいもの、この先の覚悟</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================
+     06 FLOW
+======================== -->
+<section id="flow" style="position:relative;">
+  <div style="position:absolute;inset:0;z-index:0;overflow:hidden;">
+    <img src="flow-bg.jpg" alt="" style="width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:brightness(0.35);">
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom, var(--bg-mid) 0%, transparent 15%, transparent 85%, var(--bg-mid) 100%);"></div>
+  </div>
+  <div class="section-inner" style="position:relative;z-index:1;">
+    <p class="section-label reveal">06 — Flow</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      人生のタイムラインを、<br>
+      世界観として見せる。
+    </h2>
+
+    <div class="flow-steps">
+      <div class="flow-step reveal">
+        <span class="flow-step-num">01</span>
+        <div class="flow-step-content">
+          <p class="step-title">話す</p>
+          <p class="step-desc">インタビュー形式で、あなたの人生を聴く。うまく話せなくて大丈夫。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal reveal-delay-1">
+        <span class="flow-step-num">02</span>
+        <div class="flow-step-content">
+          <p class="step-title">掘り起こす</p>
+          <p class="step-desc">まだ言葉になっていない想いを、対話の中で引き出す。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal reveal-delay-2">
+        <span class="flow-step-num">03</span>
+        <div class="flow-step-content">
+          <p class="step-title">言葉にする</p>
+          <p class="step-desc">あなたの声を、文章として編集する。あなたの温度感を大切に。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal reveal-delay-3">
+        <span class="flow-step-num">04</span>
+        <div class="flow-step-content">
+          <p class="step-title">世界観にする</p>
+          <p class="step-desc">色、余白、タイポグラフィで、あなたの世界を設計する。</p>
+        </div>
+      </div>
+      <div class="flow-step reveal">
+        <span class="flow-step-num">05</span>
+        <div class="flow-step-content">
+          <p class="step-title">人生のWebページになる</p>
+          <p class="step-desc">あなたを知ってほしい人に、届く一枚。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================
+     07 PROMISE
+======================== -->
+<section id="promise">
+  <div class="section-inner">
+    <p class="section-label reveal">07 — Promise</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      うまく話せなくても<br>大丈夫です。
+    </h2>
+
+    <div class="promise-list">
+      <p class="promise-item reveal">聞くこと。</p>
+      <p class="promise-item reveal reveal-delay-1">掘り起こすこと。</p>
+      <p class="promise-item reveal reveal-delay-2">共感すること。</p>
+      <p class="promise-item reveal reveal-delay-3">言葉にすること。</p>
+      <p class="promise-item reveal">形にすること。</p>
+    </div>
+
+    <p class="section-body reveal reveal-delay-1" style="margin-top:40px;">
+      私はあなたに興味があります。<br>
+      リラックスした雑談から<br>あなたの中にある答えを見つけていきます。
+    </p>
+  </div>
+</section>
+
+
+<!-- ========================
+     08 BENEFIT
+======================== -->
+<section id="benefit">
+  <div class="section-inner wide">
+    <p class="section-label reveal">08 — Benefit</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      "あなた"をwebページにした未来
+    </h2>
+
+    <div class="benefit-grid reveal reveal-delay-2">
+      <div class="benefit-item">
+        <div class="benefit-icon"></div>
+        <p class="benefit-text">深く理解してもらえる</p>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon"></div>
+        <p class="benefit-text">信頼される</p>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon"></div>
+        <p class="benefit-text">応援される</p>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon"></div>
+        <p class="benefit-text">人間関係が深くなる</p>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon"></div>
+        <p class="benefit-text">未来に残すことができる</p>
+      </div>
+      <div class="benefit-item">
+        <div class="benefit-icon"></div>
+        <p class="benefit-text">自分の人生を好きになる</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================
+     09 FOR YOU
+======================== -->
+<section id="for-you">
+  <div class="section-inner">
+    <p class="section-label reveal">09 — For you</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      こんな人に<br>おすすめです。
+    </h2>
+
+    <div class="for-you-list">
+      <div class="for-you-item reveal">
+        <div class="for-you-dot"></div>
+        <p class="for-you-text">自分の想いや価値観をちゃんと伝えたい</p>
+      </div>
+      <div class="for-you-item reveal reveal-delay-1">
+        <div class="for-you-dot"></div>
+        <p class="for-you-text">なぜ今、それをしているのかを知ってほしい</p>
+      </div>
+      <div class="for-you-item reveal reveal-delay-2">
+        <div class="for-you-dot"></div>
+        <p class="for-you-text">人生を整理して、次のステージに進みたい</p>
+      </div>
+      <div class="for-you-item reveal reveal-delay-3">
+        <div class="for-you-dot"></div>
+        <p class="for-you-text">SNSだけでは、物足りなさを感じている</p>
+      </div>
+      <div class="for-you-item reveal">
+        <div class="for-you-dot"></div>
+        <p class="for-you-text">子どもや未来に、自分の生き方を残したい</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================
+     10 SERVICE PLAN
+======================== -->
+<section id="service-plan">
+  <div class="section-inner">
+    <p class="section-label reveal">10 — Service Plan</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      料金・サービス内容
+    </h2>
+
+    <div class="plan-card reveal reveal-delay-2">
+      <span class="plan-name">Life is Art</span>
+      <p class="plan-title">人生を作品にするLP制作</p>
+
+      <p class="plan-price">¥200,000</p>
+      <p class="plan-price-note">税込</p>
+
+      <span class="plan-section-label">Contents</span>
+      <div class="plan-items">
+        <p class="plan-item">事前ヒアリング</p>
+        <p class="plan-item">インタビュー 120分</p>
+        <p class="plan-item">人生・価値観・想いの言語化</p>
+        <p class="plan-item">LPデザイン制作</p>
+        <p class="plan-item">スマホ対応</p>
+        <p class="plan-item">QRカード付き</p>
+      </div>
+
+      <div class="plan-divider"></div>
+
+      <span class="plan-section-label">Period</span>
+      <p class="plan-period">制作期間：<strong>約1ヶ月</strong></p>
+
+      <p class="plan-tagline">
+        あなたという人生を、<br>
+        1ページの世界観として形にします。
+      </p>
+
+      <p class="plan-qr-note">QRカードで、会った人にすぐ届く。</p>
+    </div>
+
+    <div style="margin-top:48px;text-align:center;">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-3">まずは、相談してみる</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================
+     11 FINAL CTA
+======================== -->
+<!-- CTA ID: ここを #contact にしてフォームと連携 -->
+<section id="final-cta">
+  <div class="section-inner">
+    <p class="final-eyebrow reveal">Next is You</p>
+
+    <h2 class="final-title reveal reveal-delay-1">
+      みんな、<br>
+      この世界の<br>
+      主人公。
+    </h2>
+
+    <p class="final-sub reveal reveal-delay-2">
+      次は、あなたの番です。
+    </p>
+
+    <!-- CTA LINK: ここのhrefを変更 -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-3">まずは、相談してみる</a>
+  </div>
+</section>
+
+
+<!-- ========================
+     CONTACT FORM
+======================== -->
+<section id="contact">
+  <div class="section-inner">
+    <p class="section-label reveal">Contact</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      まずは、<br>相談してみる。
+    </h2>
+
+    <p class="section-body reveal reveal-delay-2">
+      フォームからお気軽にご連絡ください。<br>
+      3営業日以内にご返信いたします。
+    </p>
+
+    <form class="form-wrap reveal reveal-delay-3" name="contact" method="POST" action="#">
+
+      <div class="form-row">
+        <label class="form-label" for="name">
+          お名前 <span class="required">必須</span>
+        </label>
+        <input class="form-input" type="text" id="name" name="name" placeholder="山田 太郎" required>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="age">
+          年齢 <span class="required">必須</span>
+        </label>
+        <input class="form-input" type="text" id="age" name="age" placeholder="例：32歳" required>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="hearing">
+          ヒアリング方法 <span class="required">必須</span>
+        </label>
+        <select class="form-select" id="hearing" name="hearing" required>
+          <option value="" disabled selected>選択してください</option>
+          <option value="対面">対面</option>
+          <option value="zoom">Zoom</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="payment">
+          お支払い方法 <span class="required">必須</span>
+        </label>
+        <select class="form-select" id="payment" name="payment" required>
+          <option value="" disabled selected>選択してください</option>
+          <option value="振込">銀行振込</option>
+          <option value="クレカ">クレジットカード</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="date1">
+          ご希望日時 — 第1候補 <span class="required">必須</span>
+        </label>
+        <input class="form-input" type="text" id="date1" name="date1" placeholder="例：7月10日（木）14:00〜" required>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="date2">
+          ご希望日時 — 第2候補 <span class="required">必須</span>
+        </label>
+        <input class="form-input" type="text" id="date2" name="date2" placeholder="例：7月12日（土）10:00〜" required>
+      </div>
+
+      <div class="form-row">
+        <label class="form-label" for="note">
+          備考 <span class="required">任意</span>
+        </label>
+        <textarea class="form-textarea" id="note" name="note" placeholder="ご質問、気になること、何でもお気軽に。"></textarea>
+      </div>
+
+      <p class="form-note reveal">
+        送信後、3営業日以内にご連絡いたします。<br>
+        返信が届かない場合は迷惑メールフォルダをご確認ください。
+      </p>
+
+      <div class="form-submit-wrap reveal">
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn-submit" style="display:inline-block;text-decoration:none;">申し込む</a>
+      </div>
+
+    </form>
+  </div>
+</section>
+
+
+<!-- ========================
+     FOOTER
+======================== -->
+<footer>
+  <p class="footer-logo">LIFE is ART</p>
+  <p class="footer-tagline">あなたという人生を、作品に。</p>
+  <p class="footer-copy">© 2024 LIFE is ART. All rights reserved.</p>
+</footer>
+
+
+<!-- ========================
+     JAVASCRIPT
+======================== -->
+<script>
+(function() {
+  'use strict';
+
+  /* =====================
+     HERO SCROLL ANIMATION
+  ===================== */
+  const hero       = document.getElementById('hero');
+  const heroBg     = document.getElementById('heroBg');
+  const phase1     = document.getElementById('hero-phase-1');
+  const phase2     = document.getElementById('hero-phase-2');
+  const phase3     = document.getElementById('hero-phase-3');
+  const scrollHint = document.getElementById('heroScrollHint');
+  const largeWord  = document.getElementById('heroLargeWord');
+  const heroObject = document.getElementById('heroObject');
+
+  // Each phase occupies 1/3 of the 300vh hero height
+  // Phase 1: 0–33vh, Phase 2: 33–66vh, Phase 3: 66–100vh
+
+  function updateHero() {
+    const heroHeight = hero.offsetHeight;
+    const scrollY    = window.scrollY;
+    const progress   = Math.min(scrollY / heroHeight, 1); // 0 → 1
+
+    const p1End   = 0.20;
+    const p2Start = 0.16;
+    const p2End   = 0.38;
+    const p3Start = 0.32;
+
+    /* --- Phase 1 fade out --- */
+    const p1Opacity = progress < p1End
+      ? 1
+      : Math.max(0, 1 - (progress - p1End) / 0.1);
+    phase1.style.opacity = p1Opacity;
+
+    /* --- Phase 2 fade in / out --- */
+    let p2Opacity = 0;
+    if (progress >= p2Start && progress < p2End) {
+      p2Opacity = Math.min(1, (progress - p2Start) / 0.1);
+    } else if (progress >= p2End) {
+      p2Opacity = Math.max(0, 1 - (progress - p2End) / 0.1);
+    }
+    phase2.style.opacity = p2Opacity;
+    if (p2Opacity > 0) {
+      phase2.classList.add('active');
+    } else {
+      phase2.classList.remove('active');
+    }
+    phase2.style.opacity = p2Opacity;
+
+    /* --- Phase 3 fade in --- */
+    let p3Opacity = 0;
+    if (progress >= p3Start) {
+      p3Opacity = Math.min(1, (progress - p3Start) / 0.12);
+    }
+    if (p3Opacity > 0) {
+      phase3.classList.add('active');
+    } else {
+      phase3.classList.remove('active');
+    }
+    phase3.style.opacity = p3Opacity;
+
+    /* --- Scroll hint fade --- */
+    scrollHint.style.opacity = progress < 0.05 ? (0.4 * (1 - progress / 0.05)) : 0;
+
+    /* --- Background subtle brightening --- */
+    const brighten = Math.min(progress * 0.4, 0.12);
+    heroBg.style.background = `rgb(${Math.round(13 + brighten * 60)}, ${Math.round(12 + brighten * 55)}, ${Math.round(11 + brighten * 48)})`;
+
+    /* --- Large text parallax (very subtle) --- */
+    const parallaxY = scrollY * 0.08;
+    largeWord.parentElement.style.transform = `translateY(${parallaxY}px)`;
+
+    /* --- Object parallax --- */
+    heroObject.style.transform = `translateX(-50%) translateY(${scrollY * 0.04}px)`;
+    heroObject.style.opacity   = Math.max(0, 0.55 - progress * 1.2);
+  }
+
+  window.addEventListener('scroll', updateHero, { passive: true });
+  updateHero(); // init
+
+  /* =====================
+     INTERSECTION OBSERVER — REVEAL
+  ===================== */
+  const reveals = document.querySelectorAll('.reveal');
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  reveals.forEach(function(el) {
+    observer.observe(el);
+  });
+
+  /* Card items — slide from left */
+  const cardObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        cardObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.card-item').forEach(function(el) {
+    cardObserver.observe(el);
+  });
+
+})();
+
+/* =====================
+   WORKS SLIDER — SCROLL LINKED
+===================== */
+(function() {
+  const container = document.getElementById('works-scroll-container');
+  const slides    = document.querySelectorAll('.slide');
+  const dotsWrap  = document.getElementById('sliderDots');
+  const counter   = document.getElementById('sliderCounter');
+  const progress  = document.getElementById('sliderProgress');
+  const TOTAL     = slides.length;
+
+  let current = 0;
+
+  // Build dots
+  slides.forEach(function(_, i) {
+    var d = document.createElement('button');
+    d.className = 'slider-dot' + (i === 0 ? ' active' : '');
+    d.addEventListener('click', function() {
+      // tap to advance on mobile
+      goTo((current + 1) % TOTAL);
+    });
+    dotsWrap.appendChild(d);
+  });
+
+  function goTo(index) {
+    if (index === current) return;
+    slides[current].classList.remove('active');
+    dotsWrap.children[current].classList.remove('active');
+    current = index;
+    slides[current].classList.add('active');
+    dotsWrap.children[current].classList.add('active');
+    var num = String(current + 1).padStart(2, '0');
+    counter.textContent = num + ' / ' + String(TOTAL).padStart(2, '0');
+    // progress bar
+    progress.style.transition = 'none';
+    progress.style.width = ((current / (TOTAL - 1)) * 100) + '%';
+  }
+
+  function onScroll() {
+    if (!container) return;
+    var rect    = container.getBoundingClientRect();
+    var total   = container.offsetHeight - window.innerHeight;
+    var scrolled = -rect.top;
+    if (scrolled < 0) scrolled = 0;
+    if (scrolled > total) scrolled = total;
+    var ratio   = scrolled / total; // 0 → 1
+    var index   = Math.min(Math.floor(ratio * TOTAL), TOTAL - 1);
+    goTo(index);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+})();
+</script>
+
+</body>
+</html>
