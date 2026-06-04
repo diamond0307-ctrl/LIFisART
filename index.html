@@ -146,6 +146,86 @@
   }
 
   /* =====================
+     HERO LOAD ANIMATION
+  ===================== */
+
+  /* Loading bar */
+  .hero-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: rgba(200,146,58,0.15);
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  .hero-loader-bar {
+    height: 100%;
+    background: var(--accent-amber);
+    width: 0%;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hero-loader.done {
+    opacity: 0;
+    transition: opacity 0.4s 0.3s ease;
+  }
+
+  /* Character animation */
+  .hero-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(4px);
+    transition: opacity 0.55s ease, transform 0.55s ease, filter 0.55s ease;
+  }
+
+  .hero-char.show {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+
+  /* Hero fullscreen background image */
+  .hero-bg-img {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-bg-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    transform: scale(1.12);
+    opacity: 0;
+    transition: transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 1.2s ease;
+  }
+
+  .hero-bg-img img.loaded {
+    transform: scale(1.0);
+    opacity: 1;
+  }
+
+  .hero-bg-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(13,12,11,0.45) 0%,
+      rgba(13,12,11,0.25) 40%,
+      rgba(13,12,11,0.65) 100%
+    );
+    z-index: 1;
+  }
+
+  /* =====================
      HERO
   ===================== */
   #hero {
@@ -242,6 +322,7 @@
     width: 100%;
     text-align: center;
     padding: 0 24px;
+    z-index: 3;
     transition: opacity 0.8s var(--ease-film), transform 0.8s var(--ease-film);
   }
 
@@ -1530,13 +1611,21 @@
 </nav>
 
 
+<!-- Loading bar -->
+<div class="hero-loader" id="heroLoader"><div class="hero-loader-bar" id="heroLoaderBar"></div></div>
+
 <!-- ========================
      01 HERO
 ======================== -->
 <section id="hero">
   <div class="hero-sticky" id="heroSticky">
 
-    <!-- Background -->
+    <!-- Fullscreen background image -->
+    <div class="hero-bg-img" id="heroBgImg">
+      <img src="sample-04.png" alt="" id="heroBgImgEl">
+    </div>
+
+    <!-- Background overlay (for scroll brightening) -->
     <div class="hero-bg" id="heroBg"></div>
 
     <!-- Large background typography -->
@@ -1544,34 +1633,12 @@
       <span id="heroLargeWord">ART</span>
     </div>
 
-    <!-- Abstract art object (CSS SVG sculpture) -->
-    <div class="hero-object" id="heroObject">
-      <svg viewBox="0 0 380 160" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="objGrad" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#d4c4a0" stop-opacity="0.35"/>
-            <stop offset="60%" stop-color="#8a7a60" stop-opacity="0.2"/>
-            <stop offset="100%" stop-color="#3a3020" stop-opacity="0.05"/>
-          </radialGradient>
-          <filter id="objBlur">
-            <feGaussianBlur stdDeviation="2"/>
-          </filter>
-        </defs>
-        <!-- Organic blob shape inspired by reference image -->
-        <path d="M40 90 C30 60 50 30 100 35 C130 38 150 20 190 25 C230 30 260 15 290 35 C330 58 350 80 340 100 C330 120 300 140 260 138 C220 136 200 150 160 148 C120 146 90 150 60 135 C35 122 48 115 40 90Z"
-              fill="url(#objGrad)" filter="url(#objBlur)"/>
-        <!-- Reflection -->
-        <path d="M40 90 C30 60 50 30 100 35 C130 38 150 20 190 25 C230 30 260 15 290 35 C330 58 350 80 340 100 C330 120 300 140 260 138 C220 136 200 150 160 148 C120 146 90 150 60 135 C35 122 48 115 40 90Z"
-              fill="url(#objGrad)"
-              transform="scale(1,-1) translate(0,-300)"
-              opacity="0.15" filter="url(#objBlur)"/>
-      </svg>
-    </div>
-
-    <!-- Phase 1: Initial -->
-    <div class="hero-phase" id="hero-phase-1">
-      <span class="hero-life-is">Life is Art</span>
-      <div style="width:1px;height:48px;background:rgba(200,180,140,0.2);margin:0 auto;"></div>
+    <!-- Phase 1: Initial — char animation -->
+    <div class="hero-phase" id="hero-phase-1" style="opacity:0;">
+      <span class="hero-life-is" id="heroLabel" style="opacity:0;transition:opacity 0.6s ease;">Life is Art</span>
+      <div style="width:1px;height:48px;background:rgba(200,180,140,0.2);margin:0 auto;opacity:0;transition:opacity 0.6s 0.3s ease;" id="heroLine"></div>
+      <p id="heroMainText" style="font-size:clamp(32px,8vw,72px);font-weight:700;line-height:1.25;letter-spacing:-0.01em;color:var(--text-ivory);margin-top:32px;text-shadow:0 2px 32px rgba(0,0,0,0.4);"></p>
+      <p id="heroSubText" style="font-size:clamp(13px,3.5vw,17px);font-weight:300;color:rgba(232,224,208,0.7);margin-top:20px;line-height:1.8;opacity:0;transition:opacity 0.8s ease;"></p>
     </div>
 
     <!-- Phase 2: Main copy -->
@@ -1587,7 +1654,6 @@
         <em>あなたの人生、価値観、好き、傷、未来を</em><br>
         ひとつのWebページとして残す。
       </p>
-      <!-- CTA LINK: ここのhrefを変更 -->
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn">自分の人生を形にする</a>
     </div>
 
@@ -2155,6 +2221,78 @@
 <script>
 (function() {
   'use strict';
+
+  /* =====================
+     HERO LOAD ANIMATION
+  ===================== */
+  var loader      = document.getElementById('heroLoader');
+  var loaderBar   = document.getElementById('heroLoaderBar');
+  var bgImg       = document.getElementById('heroBgImgEl');
+  var loadPhase1  = document.getElementById('hero-phase-1');
+  var heroLabel   = document.getElementById('heroLabel');
+  var heroLine    = document.getElementById('heroLine');
+  var heroMain    = document.getElementById('heroMainText');
+  var heroSub     = document.getElementById('heroSubText');
+
+  var MAIN_TEXT = 'あなたという人生を、作品に。';
+  var SUB_TEXT  = '肩書きじゃない。あなた自身を、伝える。';
+  var CHAR_DELAY = 70; // ms per character
+
+  function splitChars(text) {
+    return text.split('').map(function(c) {
+      return '<span class="hero-char">' + (c === ' ' ? '&nbsp;' : c) + '</span>';
+    }).join('');
+  }
+
+  function animateChars(el, startDelay, cb) {
+    var spans = el.querySelectorAll('.hero-char');
+    spans.forEach(function(span, i) {
+      setTimeout(function() {
+        span.classList.add('show');
+        if (cb && i === spans.length - 1) setTimeout(cb, 400);
+      }, startDelay + i * CHAR_DELAY);
+    });
+  }
+
+  function startHeroAnim() {
+    // 1. Loader bar fills
+    loaderBar.style.width = '100%';
+
+    setTimeout(function() {
+      // 2. Loader fades out
+      loader.classList.add('done');
+
+      // 3. Background image zooms in
+      bgImg.classList.add('loaded');
+
+      // 4. Phase-1 becomes visible
+      loadPhase1.style.transition = 'opacity 0.6s ease';
+      loadPhase1.style.opacity = '1';
+
+      // 5. Label + line fade in
+      setTimeout(function() { heroLabel.style.opacity = '1'; }, 200);
+      setTimeout(function() { heroLine.style.opacity = '1'; }, 400);
+
+      // 6. Main text chars appear
+      heroMain.innerHTML = splitChars(MAIN_TEXT);
+      setTimeout(function() {
+        animateChars(heroMain, 0, function() {
+          // 7. Sub text fades in after chars done
+          heroSub.textContent = SUB_TEXT;
+          heroSub.style.opacity = '1';
+        });
+      }, 600);
+
+    }, 800);
+  }
+
+  // Start when image loads (or 200ms if already cached)
+  if (bgImg.complete) {
+    setTimeout(startHeroAnim, 200);
+  } else {
+    bgImg.addEventListener('load', function() { setTimeout(startHeroAnim, 100); });
+    bgImg.addEventListener('error', function() { setTimeout(startHeroAnim, 100); });
+  }
 
   /* =====================
      HERO SCROLL ANIMATION
