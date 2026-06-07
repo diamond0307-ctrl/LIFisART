@@ -1982,7 +1982,7 @@
         <em>あなたの人生、価値観、好き、傷、未来を</em><br>
         ひとつのWebページとして残す。
       </p>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn">自分の人生を形にする</a>
+      <a href="#contact" class="btn">自分の人生を形にする</a>
     </div>
 
     <!-- Scroll hint -->
@@ -2410,7 +2410,7 @@
     </div>
 
     <div style="margin-top:48px;text-align:center;">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-3">まずは、相談してみる</a>
+      <a href="#contact" class="btn reveal reveal-delay-3">まずは、相談してみる</a>
     </div>
   </div>
 </section>
@@ -2419,7 +2419,6 @@
 <!-- ========================
      11 FINAL CTA
 ======================== -->
-<!-- CTA ID: ここを #contact にしてフォームと連携 -->
 <section id="final-cta">
   <div class="section-inner">
     <p class="final-eyebrow reveal">Next is You</p>
@@ -2434,8 +2433,7 @@
       次は、あなたの番です。
     </p>
 
-    <!-- CTA LINK: ここのhrefを変更 -->
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-3">まずは、相談してみる</a>
+    <a href="#contact" class="btn reveal reveal-delay-3">まずは、相談してみる</a>
   </div>
 </section>
 
@@ -2456,7 +2454,11 @@
       3営業日以内にご返信いたします。
     </p>
 
-    <form class="form-wrap reveal reveal-delay-3" name="contact" method="POST" action="#">
+    <form class="form-wrap reveal reveal-delay-3" name="life-is-art-contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html">
+      <input type="hidden" name="form-name" value="life-is-art-contact" />
+      <p style="display:none;">
+        <label>Don't fill this out: <input name="bot-field" /></label>
+      </p>
 
       <div class="form-row">
         <label class="form-label" for="name">
@@ -2521,7 +2523,7 @@
       </p>
 
       <div class="form-submit-wrap reveal">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn-submit" style="display:inline-block;text-decoration:none;">申し込む</a>
+        <button type="submit" class="btn-submit">申し込む</button>
       </div>
 
     </form>
