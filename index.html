@@ -1156,6 +1156,171 @@
   }
 
   /* =====================
+     10 PROFILE
+  ===================== */
+  #profile {
+    background:
+      radial-gradient(ellipse 52% 34% at 18% 12%, rgba(105, 66, 104, 0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 42% 30% at 84% 22%, rgba(30, 172, 184, 0.12) 0%, transparent 68%),
+      var(--bg-mid);
+    border-top: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .profile-lead {
+    max-width: 760px;
+    margin-bottom: 64px;
+  }
+
+  .profile-lead-text {
+    font-size: clamp(15px, 3vw, 18px);
+    line-height: 2;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .profile-duo {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 56px;
+    position: relative;
+  }
+
+  .profile-duo::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(320px, 70vw);
+    height: min(320px, 70vw);
+    border: 1px solid rgba(200, 146, 58, 0.14);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .profile-card {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.8fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 56px);
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .profile-card:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 0.8fr);
+  }
+
+  .profile-card:nth-child(even) .profile-photo {
+    order: 2;
+  }
+
+  .profile-photo {
+    position: relative;
+  }
+
+  .profile-photo::before {
+    content: '';
+    position: absolute;
+    inset: 16px;
+    border: 1px solid rgba(232, 224, 208, 0.16);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .profile-photo img {
+    width: 100%;
+    height: 100%;
+    min-height: 420px;
+    max-height: 620px;
+    object-fit: cover;
+    filter: saturate(0.92) contrast(1.05) brightness(0.86);
+  }
+
+  .profile-photo.hiroko img {
+    object-position: center 42%;
+  }
+
+  .profile-photo.atsushi img {
+    object-position: center center;
+  }
+
+  .profile-role {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-size: 9px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--accent-amber);
+  }
+
+  .profile-role::before {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: var(--accent-amber);
+    opacity: 0.6;
+  }
+
+  .profile-name {
+    font-size: clamp(30px, 7vw, 64px);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--text-ivory);
+    margin-bottom: 16px;
+  }
+
+  .profile-subtitle {
+    font-size: clamp(15px, 3vw, 19px);
+    line-height: 1.8;
+    color: var(--text-ivory);
+    margin-bottom: 28px;
+    font-weight: 400;
+  }
+
+  .profile-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    color: var(--text-muted);
+    font-size: clamp(14px, 2.8vw, 16px);
+    line-height: 1.95;
+    font-weight: 300;
+  }
+
+  .profile-copy .profile-question {
+    color: rgba(232, 224, 208, 0.86);
+    border-left: 1px solid rgba(200, 146, 58, 0.55);
+    padding-left: 20px;
+  }
+
+  .profile-ending {
+    margin: 76px auto 0;
+    max-width: 780px;
+    padding: 44px 0 0;
+    border-top: 1px solid var(--border-mid);
+    text-align: center;
+  }
+
+  .profile-ending-title {
+    font-size: clamp(22px, 5vw, 38px);
+    line-height: 1.45;
+    color: var(--text-ivory);
+    margin-bottom: 20px;
+  }
+
+  .profile-ending-text {
+    font-size: clamp(14px, 3vw, 17px);
+    line-height: 2;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  /* =====================
      11 WORKS
   ===================== */
   #works {
@@ -1819,6 +1984,76 @@
     .plan-qr-note::before {
       margin-top: 10px;
       flex-shrink: 0;
+    }
+
+    .profile-lead {
+      margin-bottom: 42px;
+    }
+
+    .profile-duo {
+      gap: 54px;
+    }
+
+    .profile-duo::before {
+      top: 46%;
+      opacity: 0.55;
+    }
+
+    .profile-card,
+    .profile-card:nth-child(even) {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    .profile-card:nth-child(even) .profile-photo {
+      order: 0;
+    }
+
+    .profile-photo img {
+      min-height: 0;
+      height: auto;
+      max-height: none;
+      aspect-ratio: 4 / 5;
+    }
+
+    .profile-photo.hiroko img {
+      object-position: center 44%;
+    }
+
+    .profile-photo.atsushi img {
+      aspect-ratio: 3 / 5;
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .profile-role {
+      letter-spacing: 0.22em;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .profile-name {
+      font-size: clamp(34px, 11vw, 48px);
+    }
+
+    .profile-subtitle {
+      margin-bottom: 22px;
+    }
+
+    .profile-copy {
+      gap: 15px;
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+    .profile-copy .profile-question {
+      padding-left: 16px;
+    }
+
+    .profile-ending {
+      margin-top: 54px;
+      padding-top: 34px;
+      text-align: left;
     }
 
     .btn,
@@ -2510,11 +2745,81 @@
 
 
 <!-- ========================
-     10 SERVICE PLAN
+     10 PROFILE
+======================== -->
+<section id="profile">
+  <div class="section-inner wide">
+    <p class="section-label reveal">10 — Profile</p>
+
+    <div class="profile-lead">
+      <h2 class="section-title reveal reveal-delay-1">
+        聴く人と、形にする人。
+      </h2>
+      <p class="profile-lead-text reveal reveal-delay-2">
+        Life is Art のLP制作は、人生の奥にある本音を丁寧に聴くHirokoと、
+        その物語を言葉とWebページに編集する石丸篤史の2人で行います。
+      </p>
+    </div>
+
+    <div class="profile-duo">
+      <article class="profile-card reveal">
+        <div class="profile-photo hiroko">
+          <img src="E0BCF392-8C51-428C-B58B-2CAB22E5B13F.PNG" alt="HIROKO">
+        </div>
+        <div class="profile-text">
+          <p class="profile-role">Life Hearing Therapist</p>
+          <h3 class="profile-name">HIROKO</h3>
+          <p class="profile-subtitle">本来の自分に還る、ライフヒアリングセラピスト。</p>
+          <div class="profile-copy">
+            <p>個人鑑定、コーチング、ヒーリング、形而上学の学びを通して、延べ2,500人以上の人生の悩みや本音に向き合う。</p>
+            <p>離婚、子育て、世界旅、海外移住、鬱、帰国。自身の人生を通して深めてきた問いは、</p>
+            <p class="profile-question">「人はなぜ変われないのか」<br>「本当の望みはどこにあるのか」。</p>
+            <p>現在は、悩みの奥にある本音を丁寧に聴き、その人が自分自身の答えに気づき、“本来の自分”を思い出すためのセッションを行っている。</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="profile-card reveal reveal-delay-1">
+        <div class="profile-photo atsushi">
+          <img src="19A1C4B9-43DD-47DD-91B6-2705E1C9A0E4.PNG" alt="石丸 篤史">
+        </div>
+        <div class="profile-text">
+          <p class="profile-role">Creator / LP Director</p>
+          <h3 class="profile-name">石丸 篤史</h3>
+          <p class="profile-subtitle">人生の物語を、言葉とLPにするクリエイター。</p>
+          <div class="profile-copy">
+            <p>AIを活用したLP制作、ブランディング、アート活動を行うクリエイター。</p>
+            <p>世界約30カ国を旅し、さまざまな国の文化、価値観、生き方に触れる中で、「人はそれぞれ異なる物語を持っている」という感覚を深めてきた。</p>
+            <p>現在は、個人事業主、サロン、スクール、アーティストなど、想いや世界観を持つ人の人生や事業背景を丁寧にヒアリングし、“伝わる言葉”と“申し込みにつながるLP”として形にしている。</p>
+            <p>ただ綺麗なページを作るのではなく、その人がなぜこの道を選び、何を大切にし、誰に何を届けたいのか。その奥にある物語を掘り起こし、見る人の心が自然と動く構成へと編集していく。</p>
+            <p>また、ART for BEING代表として、子ども、障がい者、アーティストなど、さまざまな人が自分を表現できる場づくりにも取り組む。</p>
+            <p class="profile-question">想いを、言葉に。<br>人生を、作品に。<br>世界観を、届く形に。</p>
+            <p>AIとアートを通して、その人だけの Life is Art を社会へ届けている。</p>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="profile-ending reveal reveal-delay-2">
+      <h3 class="profile-ending-title">
+        Hirokoが、あなたの本音を聴き、<br>
+        石丸篤史が、届くLPへ編集する。
+      </h3>
+      <p class="profile-ending-text">
+        だから Life is Art は、ただの制作サービスではありません。<br>
+        あなたの人生が、誰かの心に届く作品になるまで伴走するプロジェクトです。
+      </p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================
+     11 SERVICE PLAN
 ======================== -->
 <section id="service-plan">
   <div class="section-inner">
-    <p class="section-label reveal">10 — Service Plan</p>
+    <p class="section-label reveal">11 — Service Plan</p>
 
     <h2 class="section-title reveal reveal-delay-1">
       料金・サービス内容
@@ -2524,8 +2829,9 @@
       <span class="plan-name">Life is Art</span>
       <p class="plan-title">人生を作品にするLP制作</p>
 
-      <p class="plan-price">¥200,000</p>
+      <p class="plan-price">¥300,000</p>
       <p class="plan-price-note">税込</p>
+      <p class="plan-price-note">1ヶ月に5人限定（5人のみ受付）</p>
 
       <span class="plan-section-label">Contents</span>
       <div class="plan-items">
@@ -2558,7 +2864,7 @@
 
 
 <!-- ========================
-     11 FINAL CTA
+     12 FINAL CTA
 ======================== -->
 <section id="final-cta">
   <div class="section-inner">
