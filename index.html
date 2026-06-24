@@ -391,6 +391,48 @@
     color: var(--text-ivory);
   }
 
+  .cta-note {
+    margin: 18px auto 0;
+    max-width: 420px;
+    font-size: clamp(12px, 3vw, 14px);
+    line-height: 1.8;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 0.04em;
+  }
+
+  .section-cta {
+    margin-top: 48px;
+    text-align: center;
+  }
+
+  #mid-cta {
+    background: var(--bg-mid);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  #mid-cta .section-inner {
+    padding-top: 96px;
+    padding-bottom: 96px;
+  }
+
+  .mid-cta-title {
+    font-size: clamp(24px, 6vw, 44px);
+    line-height: 1.35;
+    color: var(--text-ivory);
+    margin-bottom: 24px;
+  }
+
+  .mid-cta-text {
+    font-size: clamp(14px, 3.5vw, 17px);
+    line-height: 2;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
   /* =====================
      SECTIONS — COMMON
   ===================== */
@@ -779,7 +821,198 @@
   }
 
   /* =====================
-     09 FOR YOU
+     09 AFTER USE
+  ===================== */
+  #after-use {
+    background: var(--bg-deep);
+    border-top: 1px solid var(--border);
+  }
+
+  #after-use .benefit-grid {
+    grid-template-columns: 1fr;
+    gap: 26px;
+    border: none;
+    margin-top: 58px;
+  }
+
+  @media (min-width: 720px) {
+    #after-use .benefit-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+    }
+  }
+
+  .after-use-card {
+    min-height: 230px;
+    position: relative;
+    overflow: hidden;
+    padding: 34px 28px;
+    border: 1px solid color-mix(in srgb, var(--text-ivory) 13%, var(--border-mid));
+    border-radius: 24px;
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--text-ivory) 10%, var(--bg-card)) 0%,
+        color-mix(in srgb, var(--bg-card) 92%, var(--bg-mid)) 38%,
+        color-mix(in srgb, var(--bg-deep) 78%, var(--bg-card)) 100%
+      );
+    box-shadow:
+      30px 34px 72px color-mix(in srgb, var(--bg-deep) 92%, transparent),
+      14px 16px 28px color-mix(in srgb, var(--bg-deep) 72%, transparent),
+      -18px -18px 42px color-mix(in srgb, var(--text-ivory) 8%, transparent),
+      inset 2px 2px 0 color-mix(in srgb, var(--text-ivory) 16%, transparent),
+      inset 10px 10px 24px color-mix(in srgb, var(--text-ivory) 4%, transparent),
+      inset -22px -22px 42px color-mix(in srgb, var(--bg-deep) 64%, transparent);
+    transition:
+      transform 0.45s var(--ease-film),
+      box-shadow 0.45s var(--ease-film),
+      border-color 0.45s var(--ease-film),
+      background 0.45s var(--ease-film);
+  }
+
+  #after-use .benefit-item {
+    border-right: 1px solid color-mix(in srgb, var(--text-ivory) 13%, var(--border-mid));
+    border-bottom: 1px solid color-mix(in srgb, var(--text-ivory) 13%, var(--border-mid));
+  }
+
+  .after-use-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 23px;
+    background:
+      linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--text-ivory) 16%, transparent),
+        transparent 30%,
+        color-mix(in srgb, var(--bg-deep) 24%, transparent) 72%,
+        color-mix(in srgb, var(--bg-deep) 52%, transparent)
+      ),
+      radial-gradient(
+        ellipse at 12% 8%,
+        color-mix(in srgb, var(--text-ivory) 18%, transparent),
+        transparent 48%
+      );
+    opacity: 0.78;
+    pointer-events: none;
+  }
+
+  .after-use-card::after {
+    content: '';
+    position: absolute;
+    right: -18%;
+    bottom: -26%;
+    width: 70%;
+    height: 58%;
+    border-radius: 50%;
+    background:
+      radial-gradient(
+        ellipse,
+        color-mix(in srgb, var(--bg-deep) 72%, transparent),
+        transparent 68%
+      );
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  .after-use-card:hover {
+    transform: translateY(-8px);
+    border-color: color-mix(in srgb, var(--accent-amber) 46%, var(--border-mid));
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--text-ivory) 13%, var(--bg-card)) 0%,
+        color-mix(in srgb, var(--bg-card) 96%, var(--bg-mid)) 42%,
+        color-mix(in srgb, var(--bg-deep) 74%, var(--bg-card)) 100%
+      );
+    box-shadow:
+      38px 44px 86px color-mix(in srgb, var(--bg-deep) 95%, transparent),
+      18px 22px 36px color-mix(in srgb, var(--bg-deep) 82%, transparent),
+      -20px -20px 48px color-mix(in srgb, var(--text-ivory) 10%, transparent),
+      inset 2px 2px 0 color-mix(in srgb, var(--text-ivory) 18%, transparent),
+      inset 12px 12px 28px color-mix(in srgb, var(--text-ivory) 5%, transparent),
+      inset -24px -24px 48px color-mix(in srgb, var(--bg-deep) 58%, transparent);
+  }
+
+  .after-use-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .after-use-num {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 24px;
+    margin-bottom: 16px;
+    padding: 0 12px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--accent-amber) 28%, var(--border-mid));
+    background:
+      linear-gradient(
+        145deg,
+        color-mix(in srgb, var(--text-ivory) 7%, var(--bg-card)),
+        color-mix(in srgb, var(--bg-deep) 76%, var(--bg-card))
+      );
+    box-shadow:
+      8px 8px 18px color-mix(in srgb, var(--bg-deep) 78%, transparent),
+      -5px -5px 14px color-mix(in srgb, var(--text-ivory) 7%, transparent),
+      inset 1px 1px 0 color-mix(in srgb, var(--text-ivory) 12%, transparent),
+      inset -5px -5px 12px color-mix(in srgb, var(--bg-deep) 55%, transparent);
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    color: var(--accent-amber);
+    opacity: 0.92;
+  }
+
+  .after-use-title {
+    font-size: clamp(16px, 3.4vw, 20px);
+    line-height: 1.45;
+    color: var(--text-ivory);
+    font-weight: 500;
+  }
+
+  #after-use .after-use-title::after {
+    content: '';
+    display: block;
+    width: 48px;
+    height: 2px;
+    margin-top: 18px;
+    border-radius: 999px;
+    background:
+      linear-gradient(
+        to right,
+        color-mix(in srgb, var(--accent-amber) 65%, transparent),
+        color-mix(in srgb, var(--text-ivory) 12%, transparent),
+        transparent
+      );
+    box-shadow:
+      0 0 16px color-mix(in srgb, var(--accent-amber) 22%, transparent),
+      inset 1px 1px 0 color-mix(in srgb, var(--text-ivory) 14%, transparent);
+    opacity: 0.72;
+  }
+
+  .after-use-desc {
+    font-size: clamp(13px, 3vw, 15px);
+    line-height: 1.8;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+
+  .after-use-note {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: clamp(12px, 3vw, 14px);
+    line-height: 1.8;
+    color: var(--text-dim);
+    font-weight: 300;
+  }
+
+  /* =====================
+     10 FOR YOU
   ===================== */
   #for-you {
     background: var(--bg-deep);
@@ -1218,6 +1451,8 @@
 
   .profile-photo {
     position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
   }
 
   .profile-photo::before {
@@ -1232,8 +1467,6 @@
   .profile-photo img {
     width: 100%;
     height: 100%;
-    min-height: 420px;
-    max-height: 620px;
     object-fit: cover;
     filter: saturate(0.92) contrast(1.05) brightness(0.86);
   }
@@ -1243,7 +1476,7 @@
   }
 
   .profile-photo.atsushi img {
-    object-position: center center;
+    object-position: 58% center;
   }
 
   .profile-role {
@@ -1753,6 +1986,11 @@
       padding: 76px 20px;
     }
 
+    #mid-cta .section-inner {
+      padding-top: 72px;
+      padding-bottom: 72px;
+    }
+
     .section-inner.wide {
       max-width: 700px;
     }
@@ -1794,6 +2032,15 @@
     .section-body {
       font-size: 15px;
       line-height: 1.9;
+    }
+
+    .section-cta {
+      margin-top: 34px;
+    }
+
+    .cta-note {
+      font-size: 12px;
+      line-height: 1.75;
     }
 
     #problem .big-quote {
@@ -2010,9 +2257,6 @@
     }
 
     .profile-photo img {
-      min-height: 0;
-      height: auto;
-      max-height: none;
       aspect-ratio: 4 / 5;
     }
 
@@ -2021,9 +2265,8 @@
     }
 
     .profile-photo.atsushi img {
-      aspect-ratio: 3 / 5;
       object-fit: cover;
-      object-position: center center;
+      object-position: 58% center;
     }
 
     .profile-role {
@@ -2300,6 +2543,8 @@
      NAV
 ======================== -->
 <nav class="nav">
+  <a href="#hero" class="logo">LIFE is ART</a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="nav-cta">無料相談</a>
 </nav>
 
 
@@ -2358,7 +2603,8 @@
         <em>あなたの人生、価値観、好き、傷、未来を</em><br>
         ひとつのWebページとして残す。
       </p>
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn">自分の人生を形にする</a>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn">無料ライフヒアリングはこちら</a>
+      <p class="cta-note">まずは、あなたの人生や価値観を聞かせてください。<br>まだ言葉になっていなくても大丈夫です。</p>
     </div>
 
     <!-- Scroll hint -->
@@ -2667,6 +2913,24 @@
 
 
 <!-- ========================
+     MIDDLE CTA
+======================== -->
+<section id="mid-cta">
+  <div class="section-inner">
+    <h2 class="mid-cta-title reveal">
+      あなたの人生を一緒に整理します
+    </h2>
+    <p class="mid-cta-text reveal reveal-delay-1">
+      最初に必要なのは、すぐに決める覚悟ではありません。<br>
+      あなたの人生や価値観を、少しずつ言葉にしていく時間です。
+    </p>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-2">無料ライフヒアリングはこちら</a>
+    <p class="cta-note reveal reveal-delay-3">まずは、あなたの人生や価値観を聞かせてください。</p>
+  </div>
+</section>
+
+
+<!-- ========================
      08 BENEFIT
 ======================== -->
 <section id="benefit">
@@ -2703,16 +2967,91 @@
         <p class="benefit-text">自分の人生を好きになる</p>
       </div>
     </div>
+
+    <div class="section-cta reveal reveal-delay-3">
+      <p class="cta-note" style="margin-top:0;margin-bottom:18px;">まだ言葉になっていなくても大丈夫です。</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn">無料ライフヒアリングはこちら</a>
+    </div>
   </div>
 </section>
 
 
 <!-- ========================
-     09 FOR YOU
+     09 AFTER USE
+======================== -->
+<section id="after-use">
+  <div class="section-inner wide">
+    <p class="section-label reveal">09 — After Use</p>
+
+    <h2 class="section-title reveal reveal-delay-1">
+      作って終わりじゃない。<br>
+      あなたの人生は、展開できる。
+    </h2>
+
+    <div class="section-body reveal reveal-delay-2">
+      <p>
+        このページは、ただ眺めるためのものではありません。<br>
+        自分を知ってもらうための入口になり、<br>
+        SNS、名刺、QRカード、プロフィール、講演、サービス紹介、採用、営業、イベントなど、<br>
+        あなたの活動のあらゆる場面で使える“人生の土台”になります。
+      </p>
+      <p>
+        だからこそ、一度きちんと自分を言語化し、<br>
+        形にしておくことには意味があります。
+      </p>
+    </div>
+
+    <div class="benefit-grid reveal reveal-delay-2">
+      <div class="benefit-item after-use-card">
+        <span class="after-use-num">01</span>
+        <h3 class="after-use-title">SNSで発信する</h3>
+        <p class="after-use-desc">投稿やプロフィール文に、あなたの言葉を展開できる。</p>
+      </div>
+      <div class="benefit-item after-use-card">
+        <span class="after-use-num">02</span>
+        <h3 class="after-use-title">QRカードで渡す</h3>
+        <p class="after-use-desc">名刺やカードから、あなたの人生ページへ案内できる。</p>
+      </div>
+      <div class="benefit-item after-use-card">
+        <span class="after-use-num">03</span>
+        <h3 class="after-use-title">プロフィールに使う</h3>
+        <p class="after-use-desc">肩書きだけでは伝わらない背景や想いを届けられる。</p>
+      </div>
+      <div class="benefit-item after-use-card">
+        <span class="after-use-num">04</span>
+        <h3 class="after-use-title">サービス紹介につなげる</h3>
+        <p class="after-use-desc">なぜこの人から買うのか、という信頼の土台になる。</p>
+      </div>
+      <div class="benefit-item after-use-card">
+        <span class="after-use-num">05</span>
+        <h3 class="after-use-title">イベント・登壇で使う</h3>
+        <p class="after-use-desc">自己紹介や活動紹介の代わりに、深く知ってもらえる。</p>
+      </div>
+      <div class="benefit-item after-use-card">
+        <span class="after-use-num">06</span>
+        <h3 class="after-use-title">未来に残す</h3>
+        <p class="after-use-desc">今の自分の想いを、人生のアーカイブとして残せる。</p>
+      </div>
+    </div>
+
+    <p class="after-use-note reveal reveal-delay-3">
+      ※制作後のSNS運用代行や集客運用は基本サービス範囲外ですが、<br>
+      「どう使うと活きるか」まで見据えて設計します。
+    </p>
+
+    <div class="section-cta reveal reveal-delay-3">
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn">無料ライフヒアリングはこちら</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========================
+     10 FOR YOU
 ======================== -->
 <section id="for-you">
   <div class="section-inner">
-    <p class="section-label reveal">09 — For you</p>
+    <p class="section-label reveal">10 — For you</p>
 
     <h2 class="section-title reveal reveal-delay-1">
       こんな人に<br>おすすめです。
@@ -2745,19 +3084,20 @@
 
 
 <!-- ========================
-     10 PROFILE
+     11 PROFILE
 ======================== -->
 <section id="profile">
   <div class="section-inner wide">
-    <p class="section-label reveal">10 — Profile</p>
+    <p class="section-label reveal">11 — Profile</p>
 
     <div class="profile-lead">
       <h2 class="section-title reveal reveal-delay-1">
-        聴く人と、形にする人。
+        人生に宿る物語を、<br>ひとつの作品へ。
       </h2>
       <p class="profile-lead-text reveal reveal-delay-2">
-        Life is Art のLP制作は、人生の奥にある本音を丁寧に聴くHirokoと、
-        その物語を言葉とWebページに編集する石丸篤史の2人で行います。
+        Life is Art のLP制作は、Hirokoによる深いヒアリングと、
+        石丸篤史による言葉・構成・Web表現によって、
+        その人だけの人生の輪郭を静かに描き出していきます。
       </p>
     </div>
 
@@ -2781,7 +3121,7 @@
 
       <article class="profile-card reveal reveal-delay-1">
         <div class="profile-photo atsushi">
-          <img src="19A1C4B9-43DD-47DD-91B6-2705E1C9A0E4.PNG" alt="石丸 篤史">
+          <img src="6B2D40B4-11B9-460E-8FB9-81FDD4EC115F.PNG" alt="石丸 篤史">
         </div>
         <div class="profile-text">
           <p class="profile-role">Creator / LP Director</p>
@@ -2790,7 +3130,7 @@
           <div class="profile-copy">
             <p>AIを活用したLP制作、ブランディング、アート活動を行うクリエイター。</p>
             <p>世界約30カ国を旅し、さまざまな国の文化、価値観、生き方に触れる中で、「人はそれぞれ異なる物語を持っている」という感覚を深めてきた。</p>
-            <p>現在は、個人事業主、サロン、スクール、アーティストなど、想いや世界観を持つ人の人生や事業背景を丁寧にヒアリングし、“伝わる言葉”と“申し込みにつながるLP”として形にしている。</p>
+            <p>現在は、個人事業主、サロン、スクール、アーティストなど、想いや世界観を持つ人の人生や事業背景を丁寧にヒアリングし、“伝わる言葉”と“必要な人に届くLP”として形にしている。</p>
             <p>ただ綺麗なページを作るのではなく、その人がなぜこの道を選び、何を大切にし、誰に何を届けたいのか。その奥にある物語を掘り起こし、見る人の心が自然と動く構成へと編集していく。</p>
             <p>また、ART for BEING代表として、子ども、障がい者、アーティストなど、さまざまな人が自分を表現できる場づくりにも取り組む。</p>
             <p class="profile-question">想いを、言葉に。<br>人生を、作品に。<br>世界観を、届く形に。</p>
@@ -2802,12 +3142,12 @@
 
     <div class="profile-ending reveal reveal-delay-2">
       <h3 class="profile-ending-title">
-        Hirokoが、あなたの本音を聴き、<br>
-        石丸篤史が、届くLPへ編集する。
+        あなたの人生に宿る物語を、<br>
+        ひとつの作品へ。
       </h3>
       <p class="profile-ending-text">
-        だから Life is Art は、ただの制作サービスではありません。<br>
-        あなたの人生が、誰かの心に届く作品になるまで伴走するプロジェクトです。
+        私たちは、あなたの奥にある想い、本音、歩んできた時間を丁寧にひもとき、<br>
+        必要な人の心へ届くLPとして、静かに、美しく形にしていきます。
       </p>
     </div>
   </div>
@@ -2815,11 +3155,11 @@
 
 
 <!-- ========================
-     11 SERVICE PLAN
+     12 SERVICE PLAN
 ======================== -->
 <section id="service-plan">
   <div class="section-inner">
-    <p class="section-label reveal">11 — Service Plan</p>
+    <p class="section-label reveal">12 — Service Plan</p>
 
     <h2 class="section-title reveal reveal-delay-1">
       料金・サービス内容
@@ -2857,14 +3197,15 @@
     </div>
 
     <div style="margin-top:48px;text-align:center;">
-      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-3">まずは、相談してみる</a>
+      <p class="cta-note reveal reveal-delay-2" style="margin-top:0;margin-bottom:18px;">まずは、あなたの人生や価値観を聞かせてください。</p>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-3">無料ライフヒアリングはこちら</a>
     </div>
   </div>
 </section>
 
 
 <!-- ========================
-     12 FINAL CTA
+     13 FINAL CTA
 ======================== -->
 <section id="final-cta">
   <div class="section-inner">
@@ -2877,10 +3218,12 @@
     </h2>
 
     <p class="final-sub reveal reveal-delay-2">
-      次は、あなたの番です。
+      次は、あなたの番です。<br>
+      まずは、あなたの人生や価値観を聞かせてください。
     </p>
 
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-3">まずは、相談してみる</a>
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSdq3-qgWMEan2fVrkybW7zhyx3EYr1f0aB2b_k5LuMv11_g3A/viewform" target="_blank" class="btn reveal reveal-delay-3">無料ライフヒアリングはこちら</a>
+    <p class="cta-note reveal reveal-delay-4">まだ言葉になっていなくても大丈夫です。</p>
   </div>
 </section>
 
